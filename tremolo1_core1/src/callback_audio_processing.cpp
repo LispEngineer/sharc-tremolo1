@@ -247,7 +247,7 @@ void processaudio_callback(void) {
 
 	float volume = multicore_data->audioproj_fin_pot_hadc0; // 0.0 to 1.0
 	float tone = multicore_data->audioproj_fin_pot_hadc1; // 0.0 to 1.0
-	int longest = 92;
+	int longest = 142;
 	int tone_count = (int)(((float)longest) * tone) + 8; // Don't go below 8
 	static int positive = 1;
 	static int count = 0;
