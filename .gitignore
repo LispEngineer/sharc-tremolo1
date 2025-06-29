@@ -1,3 +1,5 @@
+# From: https://github.com/analogdevicesinc/sam-baremetal-sdk/blob/master/.gitignore
+
 # Standard CCES build files
 system.tmp.svc
 
@@ -94,3 +96,7 @@ scancode-results/
 Linux-Boot/
 docs/dokuwiki
 RemoteSystemsTempFiles/
+
+
+#### DPF additions
+*~
