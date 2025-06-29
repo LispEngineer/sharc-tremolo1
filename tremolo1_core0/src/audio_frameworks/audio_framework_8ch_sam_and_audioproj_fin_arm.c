@@ -19,6 +19,7 @@
  */
 
 #include <stdio.h>
+#include <math.h>
 
 // Define your audio system parameters in this file
 #include "common/audio_system_config.h"
@@ -580,6 +581,7 @@ void audioframework_background_loop(void) {
     }
     // If the Audio Project Fin is attached, make a basic VU meter
     #if (SAM_AUDIOPROJ_FIN_BOARD_PRESENT)
+    	/*
     	if (multicore_data->audio_in_amplitude > -20.0) {
     		gpio_write(GPIO_AUDIOPROJ_FIN_LED_VU4, GPIO_HIGH);
     	} else {
@@ -603,7 +605,34 @@ void audioframework_background_loop(void) {
     	} else {
     		gpio_write(GPIO_AUDIOPROJ_FIN_LED_VU1, GPIO_LOW);
     	}
+    	*/
 	#endif     // SAM_AUDIOPROJ_FIN_BOARD_PRESENT
+
+    // Let's blink LEDs when the POTs are turned
+
+    static float last_hadc0 = 0.0;
+    float hadc0 = multicore_data->audioproj_fin_pot_hadc0;
+    const float epsilon = 0.002; // 0.001 flaps
+    char msg[128];
+
+    if (fabs(hadc0 - last_hadc0) >= epsilon) {
+    	gpio_toggle(GPIO_AUDIOPROJ_FIN_LED_VU1);
+    	last_hadc0 = hadc0;
+    	snprintf(msg, sizeof(msg) - 1, "Volume: %.4f", hadc0);
+    	log_event(EVENT_INFO, msg);
+    }
+
+    static float last_hadc1 = 0.0;
+    float hadc1 = multicore_data->audioproj_fin_pot_hadc1;
+
+    if (fabs(hadc1 - last_hadc1) >= epsilon) {
+    	gpio_toggle(GPIO_AUDIOPROJ_FIN_LED_VU2);
+    	last_hadc1 = hadc1;
+    	snprintf(msg, sizeof(msg) - 1, "Tone: %.4f", hadc1);
+    	log_event(EVENT_INFO, msg);
+    }
+
+
 
 }
 
