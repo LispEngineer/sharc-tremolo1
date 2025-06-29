@@ -244,6 +244,9 @@ void processaudio_callback(void) {
 
 	}
 
+
+	float volume = multicore_data->audioproj_fin_pot_hadc0; // 0.0 to 1.0
+
 	// Otherwise, perform our C-based block processing here!
 	for (int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
 
@@ -259,11 +262,11 @@ void processaudio_callback(void) {
 		*/
 
 		if (i < AUDIO_BLOCK_SIZE / 2) {
-			audiochannel_0_left_out[i] = 1.0;
-			audiochannel_0_right_out[i] = 1.0;
+			audiochannel_0_left_out[i] = volume;
+			audiochannel_0_right_out[i] = volume;
 		} else {
-			audiochannel_0_left_out[i] = -1.0;
-			audiochannel_0_right_out[i] = -1.0;
+			audiochannel_0_left_out[i] = -volume;
+			audiochannel_0_right_out[i] = -volume;
 		}
 
 		/* Below are some additional examples of how to receive audio from the various input buffers
